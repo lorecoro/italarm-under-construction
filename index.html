@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Italarm</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Smooth scrolling -->
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="bg-purple-700 text-gray-300">
+
+  <!-- Mobile top bar -->
+  <div class="md:hidden flex items-center justify-between bg-gray-900 text-white p-4 fixed top-0 left-0 right-0 z-40">
+    <span class="font-semibold">Italarm</span>
+    <button id="menuBtn" class="focus:outline-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex min-h-screen pt-14 md:pt-0">
+    <!-- Sidebar -->
+    <aside id="sidebar"
+      class="fixed inset-y-0 left-0 w-64 bg-purple-300 text-gray-800 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out z-50">
+      <div class="p-6 text-xl font-bold border-b border-gray-700">
+        <img src="images/logo.png" alt="Italarm Logo" class="h-8 inline-block mr-2" />
+      </div>
+      <nav class="p-4 space-y-2">
+        <a href="#welcome" class="block px-3 py-2 rounded hover:bg-purple-900 hover:text-gray-300">Benvenuto</a>
+        <a href="#info" class="block px-3 py-2 rounded hover:bg-purple-900 hover:text-gray-300">Info</a>
+        <a href="#contacts" class="block px-3 py-2 rounded hover:bg-purple-900 hover:text-gray-300">Contatti</a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 md:ml-64">
+
+      <!-- Welcome section -->
+      <section id="welcome" class="min-h-screen flex items-center px-8">
+        <div>
+          <h1 class="text-5xl font-bold mb-4">Benvenuto</h1>
+          <p class="text-xl max-w-xl">
+            Questa web app è attualmente in costruzione. Stiamo lavorando per offrire
+            qualcosa di grande. Torna presto a vedere cosa abbiamo preparato.
+          </p>
+        </div>
+      </section>
+
+      <!-- Info section -->
+      <section id="info"
+        class="min-h-screen flex items-center bg-purple-800 px-8">
+        <div>
+          <h2 class="text-5xl font-bold mb-4">Info</h2>
+          <p class="text-xl max-w-xl">
+            Italarm è una web app dedicata agli utenti di impianti di sicurezza.
+          </p>
+        </div>
+      </section>
+
+      <!-- Contacts section -->
+      <section id="contacts"
+        class="min-h-screen flex items-center px-8">
+        <div class="w-full">
+          <h2 class="text-5xl font-bold mb-6">Contattaci</h2>
+          <form id="contact-form" class="max-w-lg space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="cf-name">Nome</label>
+              <input id="cf-name" name="name" type="text" required
+                class="w-full rounded border border-gray-300 text-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                placeholder="Il tuo nome" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1" for="cf-email">Email</label>
+              <input id="cf-email" name="email" type="email" required
+                class="w-full rounded border border-gray-300 text-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                placeholder="you@example.com" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1" for="cf-message">Messaggio</label>
+              <textarea id="cf-message" name="message" rows="6" required
+                class="w-full rounded border border-gray-300 text-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                placeholder="Il tuo messaggio"></textarea>
+            </div>
+
+            <button id="cf-send" type="button"
+              class="bg-gray-900 text-white px-5 py-2 rounded hover:bg-gray-800 transition">
+              Invia messaggio
+            </button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JS for mobile menu -->
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    // Close menu when clicking a link (mobile)
+    sidebar.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 768) {
+          sidebar.classList.add('-translate-x-full');
+        }
+      });
+    });
+  </script>
+
+  <script>
+    // Mailto-based contact form: opens user's email client with prefilled recipient/subject/body.
+    (function() {
+      const sendBtn = document.getElementById('cf-send');
+      if (!sendBtn) return;
+
+      sendBtn.addEventListener('click', function () {
+        const name = document.getElementById('cf-name').value.trim();
+        const email = document.getElementById('cf-email').value.trim();
+        const message = document.getElementById('cf-message').value.trim();
+
+        if (!name || !email || !message) {
+          alert('Per favore compila tutti i campi.');
+          return;
+        }
+
+        const recipient = 'info@italarm.it';
+        const subject = encodeURIComponent('Contatto dal sito - ' + name);
+        let body = 'Nome: ' + name + '\n';
+        body += 'Email: ' + email + '\n\n';
+        body += message + '\n\n';
+        body += '---\nInviato da: Italarm website';
+
+        const mailto = 'mailto:' + encodeURIComponent(recipient)
+          + '?subject=' + subject
+          + '&body=' + encodeURIComponent(body);
+
+        window.location.href = mailto;
+      });
+    })();
+  </script>
+
+</body>
+</html>
